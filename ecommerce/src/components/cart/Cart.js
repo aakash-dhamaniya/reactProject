@@ -16,34 +16,42 @@ function Cart() {
       quantity={item.quantity}
     />
   ));
+  function purchaseHandler(e) {
+    console.log(e);
+    ctx.items.length === 0
+      ? alert("cart is empty")
+      : alert("Order placed succesfulyy");
+  }
   return (
     <Container className="cart">
-      <Row>
-        <Col className="text-center cart-text">Cart</Col>
-      </Row>
-      <Row>
-        <Col className="text-center">
-          {/* There is no item in this cart click <Link to={"store"}>here</Link> to
+      <form onSubmit={purchaseHandler}>
+        <Row>
+          <Col className="text-center cart-text">Cart</Col>
+        </Row>
+        <Row>
+          <Col className="text-center">
+            {/* There is no item in this cart click <Link to={"store"}>here</Link> to
           shope */}
-          <Table responsive="sm">
-            <thead>
-              <tr className="th">
-                <th className="item">ITEM</th>
-                <th className="price">PRICE</th>
-                <th className="quantity">QUANTITY</th>
-              </tr>
-            </thead>
-            <tbody>{producst}</tbody>
-          </Table>
-          <div>
-            {" "}
-            <span>Total</span> <span>${TotalAmount}</span>{" "}
-          </div>
-          <div>
-            <Button>PURCHESE</Button>
-          </div>
-        </Col>
-      </Row>
+            <Table responsive="sm">
+              <thead>
+                <tr className="th">
+                  <th className="item">ITEM</th>
+                  <th className="price">PRICE</th>
+                  <th className="quantity">QUANTITY</th>
+                </tr>
+              </thead>
+              <tbody>{producst}</tbody>
+            </Table>
+            <div>
+              {" "}
+              <span>Total</span> <span>${TotalAmount}</span>{" "}
+            </div>
+            <div>
+              <Button type="onSubmit">PURCHESE</Button>
+            </div>
+          </Col>
+        </Row>
+      </form>
     </Container>
   );
 }

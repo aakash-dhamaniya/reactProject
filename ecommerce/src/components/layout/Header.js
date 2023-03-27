@@ -28,6 +28,7 @@ function Header() {
           </Navbar.Brand>
           <NavLink to={"store"}>Store</NavLink>
           <NavLink to={"about"}>About</NavLink>
+          <NavLink to={"contact"}>Contact</NavLink>
           <Nav>
             <Dropdown align="end">
               <Dropdown.Toggle variant="success">
