@@ -21,7 +21,12 @@ function Header() {
   }, 0);
   return (
     <div>
-      <Navbar bg="dark" variant="dark" style={{ height: "80px" }}>
+      <Navbar
+        style={{ zIndex: "1", height: "80px" }}
+        bg="dark"
+        variant="dark"
+        fixed="top"
+      >
         <Container>
           <Navbar.Brand>
             <NavLink to={"/"}>Best4U </NavLink>

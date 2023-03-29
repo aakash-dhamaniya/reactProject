@@ -8,6 +8,7 @@ function Contact() {
   const email = useRef("");
   async function submitHandler(e) {
     e.preventDefault();
+    console.log(name);
     const contactDetails = {
       name: name.current.value,
       email: email.current.value,

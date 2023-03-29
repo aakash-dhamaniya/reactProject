@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { Button } from "react-bootstrap";
 import CartContext from "../../store/cart-context";
 import "./CartItem.css";
+
 function CartItem(props) {
+  let placeholder = 0;
+  const quantity = useRef("");
   const ctx = useContext(CartContext);
   const removeItemHandler = (id) => {
     ctx.removeItem(id);
   };
+  placeholder = placeholder + props.quantity;
   return (
     <tr className="items">
       <td className="image-title">
@@ -21,7 +25,12 @@ function CartItem(props) {
       <td>
         <div className="quan-rem">
           <span className="quantity">
-            <input type="text" min={1} value={props.quantity} />
+            <input
+              type="text"
+              min={1}
+              ref={quantity}
+              placeholder={placeholder}
+            />
           </span>
           <span className="rem">
             <Button

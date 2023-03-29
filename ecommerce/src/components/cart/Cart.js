@@ -17,10 +17,12 @@ function Cart() {
     />
   ));
   function purchaseHandler(e) {
+    e.preventDefault();
     console.log(e);
     ctx.items.length === 0
       ? alert("cart is empty")
       : alert("Order placed succesfulyy");
+    ctx.empty();
   }
   return (
     <Container className="cart">

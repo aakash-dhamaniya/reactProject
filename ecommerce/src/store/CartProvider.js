@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import { act } from "react-dom/test-utils";
 import CartContext from "./cart-context";
 const defaultCartState = {
   items: [],
@@ -50,6 +49,9 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+  if (action === "EMPTY") {
+    return { items: [], totalAmount: 0 };
+  }
   return defaultCartState;
 };
 const CartProvider = (props) => {
@@ -64,11 +66,15 @@ const CartProvider = (props) => {
     console.log("in remove reducer", id);
     dispachCartAction({ type: "REM", id });
   };
+  const emptyHandler = () => {
+    dispachCartAction("EMPTY");
+  };
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFormCartHandler,
+    empty: emptyHandler,
   };
   console.log("in provieder", cartContext.items);
   return (

@@ -30,9 +30,10 @@ const productsArr = [
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
   },
 ];
-function AvailableProducts() {
+function AvailableProducts(props) {
   const producst = productsArr.map((item) => (
     <ProductItem
+      getData={props.getData}
       key={item.id}
       id={item.id}
       title={item.title}
