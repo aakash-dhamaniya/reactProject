@@ -2,7 +2,9 @@ import { useState, useRef, useContext } from "react";
 
 import classes from "./AuthForm.module.css";
 import LoginContext from "../../store/login-context";
+import { useHistory } from "react-router-dom";
 const AuthForm = () => {
+  const history = useHistory();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
   const emailRef = useRef("");
@@ -39,6 +41,7 @@ const AuthForm = () => {
         data.then((data) => {
           console.log(data.idToken);
           logctx.addJwt(data.idToken);
+          history.replace("/");
         });
       }
       if (!res.ok) {

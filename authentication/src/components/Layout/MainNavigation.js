@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import LoginContext from "../../store/login-context";
 import { useContext } from "react";
 const MainNavigation = () => {
+  const history = useHistory();
   const logctx = useContext(LoginContext);
   const isLoggedin = logctx.isLoggedin;
   function signOutHandler() {
     logctx.clearJwt();
+    history.replace("/auth");
   }
   return (
     <header className={classes.header}>

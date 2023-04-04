@@ -1,7 +1,9 @@
 import { useRef, useContext } from "react";
 import classes from "./ProfileForm.module.css";
 import LoginContext from "../../store/login-context";
+import { useHistory } from "react-router-dom";
 const ProfileForm = () => {
+  const history = useHistory();
   const passwordref = useRef("");
   const logctx = useContext(LoginContext);
   console.log(logctx.jwt);
@@ -24,6 +26,7 @@ const ProfileForm = () => {
     const data = res.json();
     if (res.ok) {
       alert("password change successfully");
+      history.replace("/");
     }
     if (!res.ok) {
       data.then((data) => {
