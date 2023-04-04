@@ -1,12 +1,13 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 
 import classes from "./AuthForm.module.css";
-
+import LoginContext from "../../store/login-context";
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoder, setIsLoader] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const emailRef = useRef("");
   const passRef = useRef("");
+  const logctx = useContext(LoginContext);
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
@@ -15,35 +16,40 @@ const AuthForm = () => {
     setIsLoader(true);
     const email = emailRef.current.value;
     const pass = passRef.current.value;
-
+    let url;
     if (isLogin) {
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`;
     } else {
-      try {
-        const res = await fetch(
-          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: email,
-              password: pass,
-              returnSecureToken: true,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = res.json();
-        if (!res.ok) {
-          setIsLoader(false);
-          data.then((data) => {
-            alert(data.error.message);
-          });
-          throw new Error("somthing is wrong");
-        }
-      } catch (e) {
-        console.log(e);
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`;
+    }
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+          password: pass,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = res.json();
+      if (res.ok) {
+        data.then((data) => {
+          console.log(data.idToken);
+          logctx.addJwt(data.idToken);
+        });
       }
+      if (!res.ok) {
+        setIsLoader(false);
+        data.then((data) => {
+          alert(data.error.message);
+        });
+        throw new Error("somthing is wrong");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
   return (
@@ -59,7 +65,7 @@ const AuthForm = () => {
           <input type="password" id="password" required ref={passRef} />
         </div>
         <div className={classes.actions}>
-          {!isLoder ? (
+          {!isLoader ? (
             <button>
               {isLogin ? "Login with existing account" : "Create new account"}
             </button>
