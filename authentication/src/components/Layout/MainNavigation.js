@@ -9,6 +9,7 @@ const MainNavigation = () => {
   const isLoggedin = logctx.isLoggedin;
   function signOutHandler() {
     logctx.clearJwt();
+    localStorage.clear();
     history.replace("/auth");
   }
   return (

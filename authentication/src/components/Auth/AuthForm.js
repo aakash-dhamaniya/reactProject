@@ -39,8 +39,8 @@ const AuthForm = () => {
       const data = res.json();
       if (res.ok) {
         data.then((data) => {
-          console.log(data.idToken);
           logctx.addJwt(data.idToken);
+          localStorage.setItem("auth", data.idToken);
           history.replace("/");
         });
       }

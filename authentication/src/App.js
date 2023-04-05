@@ -1,11 +1,18 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
 import UserProfile from "./components/Profile/UserProfile";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
+import { useContext, useEffect } from "react";
+import LoginContext from "./store/login-context";
 
 function App() {
+  const logctx = useContext(LoginContext);
+  useEffect(() => {
+    const idToken = localStorage.getItem("auth");
+    logctx.addJwt(idToken);
+  }, []);
   return (
     <Layout>
       <Switch>
@@ -13,10 +20,15 @@ function App() {
           <HomePage />
         </Route>
         <Route path="/auth">
-          <AuthPage />
+          {!logctx.isLoggedin && <AuthPage />}
+          {logctx.isLoggedin && <Redirect to="/" />}
         </Route>
         <Route path="/profile">
-          <UserProfile />
+          {logctx.isLoggedin && <UserProfile />}
+          {!logctx.isLoggedin && <Redirect to="/auth" />}
+        </Route>
+        <Route>
+          <Redirect to="/" />
         </Route>
       </Switch>
     </Layout>
