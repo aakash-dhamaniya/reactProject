@@ -1,7 +1,7 @@
 import React from "react";
 import ProductItem from "./ProductItem";
 import "./AvailableProducts.css";
-const productsArr = [
+export const productsArr = [
   {
     id: "m1",
     title: "Colors",
@@ -38,7 +38,7 @@ function AvailableProducts(props) {
       id={item.id}
       title={item.title}
       price={item.price}
-      image={item.imageUrl}
+      imageUrl={item.imageUrl}
     />
   ));
   return (

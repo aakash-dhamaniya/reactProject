@@ -9,22 +9,14 @@ const ProductItem = (props) => {
   const AddItemHandler = (e) => {
     ctx.addItem({ ...props, quantity: 1 });
   };
-
   function goToProductHandler() {
-    let showItems = {
-      image: props.image,
-      title: props.title,
-      price: props.price,
-    };
-    props.getData(showItems);
-    let path = "/ProductPage";
+    let path = `/store/${props.id}`;
     navigate(path);
-    console.log("click");
   }
   return (
     <div className="Card hover" margin-top="2rem" border>
       <Card className="card" onClick={goToProductHandler}>
-        <Card.Img variant="top" src={props.image} alt={props.title} />
+        <Card.Img variant="top" src={props.imageUrl} alt={props.title} />
         <Card.Body>
           <Card.Title>{props.title}</Card.Title>
           <Card.Subtitle>

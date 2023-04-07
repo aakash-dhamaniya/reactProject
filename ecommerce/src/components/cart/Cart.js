@@ -12,7 +12,7 @@ function Cart() {
       id={item.id}
       title={item.title}
       price={item.price}
-      image={item.image}
+      image={item.imageUrl}
       quantity={item.quantity}
     />
   ));
