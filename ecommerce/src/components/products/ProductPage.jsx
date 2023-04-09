@@ -5,9 +5,9 @@ import CartContext from "../../store/cart-context";
 import { useParams } from "react-router-dom";
 export default function ProductPage() {
   const params = useParams();
+  console.log(params.productId);
+  const id = params.productId;
 
-  const id = params.product;
-  console.log(id);
   const product = productsArr.find((element) => element.id === id);
   console.log(product);
   const ctx = useContext(CartContext);

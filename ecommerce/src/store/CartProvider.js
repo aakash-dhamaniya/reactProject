@@ -55,12 +55,14 @@ const cartReducer = (state, action) => {
   return defaultCartState;
 };
 const CartProvider = (props) => {
-  const [token, setToken] = useState(null);
+  const initialToken = localStorage.getItem("token");
+  const [token, setToken] = useState(initialToken);
   const [cartState, dispachCartAction] = useReducer(
     cartReducer,
     defaultCartState
   );
   const userIsIsLoggedIn = !!token;
+
   const addItemToCartHandler = (item) => {
     dispachCartAction({ type: "ADD", item: item });
   };
@@ -91,7 +93,6 @@ const CartProvider = (props) => {
     login: loginHandler,
     logout: logoutHandler,
   };
-
   return (
     <CartContext.Provider value={cartContext}>
       {props.children}

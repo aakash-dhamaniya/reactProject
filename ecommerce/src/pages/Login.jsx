@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import CartContext from "../store/cart-context";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const ctx = useContext(CartContext);
-  const navigate = useNavigate();
+  const history = useHistory();
   const emailRef = useRef("");
   const passRef = useRef("");
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`;
@@ -31,8 +31,9 @@ function Login() {
       data.then((data) => {
         ctx.login(data.idToken);
       });
-      navigate("/store");
+      history.replace("/store");
     }
+
     if (!res.ok) {
       data.then((data) => {
         console.log(data);
@@ -40,6 +41,7 @@ function Login() {
       });
     }
   };
+  console.log(ctx);
   return (
     <Container style={{ marginTop: "90px" }}>
       <Form onSubmit={loginHander}>

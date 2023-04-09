@@ -1,35 +1,60 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
-import Layout from "./components/layout/Layout";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Store from "./pages/Store";
-import CartProvider from "./store/CartProvider";
 import Contact from "./pages/Contact";
 import ProductPage from "./components/products/ProductPage";
 import Login from "./pages/Login";
+import { useContext } from "react";
+import CartContext from "./store/cart-context";
+import Layout from "./components/layout/Layout";
 function App() {
-  // const [item, setItem] = useState({});
-  // function getData(data) {
-  //   setItem(data);
-  //   console.log(item);
-  // }
+  const cartCtx = useContext(CartContext);
+  console.log(cartCtx.token);
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="store" element={<Store />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="store/:product" element={<ProductPage />} />
-            <Route path="login" element={<Login />} />
+    // <Routes>
+    //   <Route path="/" element={<Layout />}>
+    //     <Route index element={<Home />} />
+    //     <Route path="about" element={<About />} />
+    //     {cartCtx.isLoggedIn ? (
+    //       <Route path="store" element={<Store />} />
+    //     ) : (
+    //       <Route path="login" element={<Login />} />
+    //     )}
+    //     <Route path="contact" element={<Contact />} />
+    //     <Route path="store/:product" element={<ProductPage />} />
+    //     <Route path="login" element={<Login />} />
+    //   </Route>
+    // </Routes>
+    <>
+      <Layout>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/home" />
           </Route>
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/store" exact>
+            {cartCtx.isLoggedIn ? <Store /> : <Redirect to="login" />}
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/contact">
+            <Contact />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/store/:productId">
+            <ProductPage />
+          </Route>
+        </Switch>
+      </Layout>
+    </>
   );
 }
 

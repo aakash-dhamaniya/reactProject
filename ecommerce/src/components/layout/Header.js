@@ -19,6 +19,7 @@ function Header() {
   const numberOfCartItem = cartCtx.items.reduce((curNumber, item) => {
     return curNumber + item.quantity;
   }, 0);
+
   return (
     <div>
       <Navbar
@@ -31,10 +32,10 @@ function Header() {
           <Navbar.Brand>
             <NavLink to={"/"}>Best4U </NavLink>
           </Navbar.Brand>
-          <NavLink to={"store"}>Store</NavLink>
-          <NavLink to={"about"}>About</NavLink>
-          <NavLink to={"contact"}>Contact</NavLink>
-          <NavLink to={"login"}>Login</NavLink>
+          <NavLink to={"/store"}>Store</NavLink>
+          <NavLink to={"/about"}>About</NavLink>
+          <NavLink to={"/contact"}>Contact</NavLink>
+          <NavLink to={"/login"}>Login</NavLink>
           <Nav>
             <Dropdown align="end">
               <Dropdown.Toggle variant="success">

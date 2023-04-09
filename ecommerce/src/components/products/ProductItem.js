@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import "./productItem.css";
 import { Button, Card } from "react-bootstrap";
 import CartContext from "../../store/cart-context";
+import { useHistory } from "react-router-dom";
 const ProductItem = (props) => {
   const ctx = useContext(CartContext);
-  let navigate = useNavigate();
+  const history = useHistory();
   const AddItemHandler = (e) => {
     ctx.addItem({ ...props, quantity: 1 });
   };
   function goToProductHandler() {
     let path = `/store/${props.id}`;
-    navigate(path);
+    history.push(path);
   }
   return (
     <div className="Card hover" margin-top="2rem" border>
