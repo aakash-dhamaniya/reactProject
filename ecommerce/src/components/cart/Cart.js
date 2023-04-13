@@ -6,10 +6,11 @@ import CartContext from "../../store/cart-context";
 function Cart() {
   const ctx = useContext(CartContext);
   const TotalAmount = ctx.totalAmount;
+  console.log(ctx.items);
   const producst = ctx.items.map((item) => (
     <CartItem
-      key={item.id}
-      id={item.id}
+      key={item._id}
+      id={item._id}
       title={item.title}
       price={item.price}
       image={item.imageUrl}
@@ -21,7 +22,7 @@ function Cart() {
     console.log(e);
     ctx.items.length === 0
       ? alert("cart is empty")
-      : alert("Order placed succesfulyy");
+      : alert("Order placed successfully");
     ctx.empty();
   }
   return (

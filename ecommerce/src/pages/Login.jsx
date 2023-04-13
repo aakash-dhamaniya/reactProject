@@ -25,12 +25,19 @@ function Login() {
       },
     });
 
-    const data = res.json();
+    const data = await res.json();
     if (res.ok) {
       console.log("login successfully");
-      data.then((data) => {
-        ctx.login(data.idToken);
-      });
+      // data.then((data) => {
+      //   ctx.login(data.idToken);
+      //   localStorage.setItem("email", data.email);
+      // });
+      const email = data.email;
+      const token = data.idToken;
+      const endpoint = `/cart${email.replace(/\.|@/g, "")}`;
+      ctx.login(token, endpoint);
+      console.log("in login");
+      ctx.showItem();
       history.replace("/store");
     }
 
@@ -41,7 +48,7 @@ function Login() {
       });
     }
   };
-  console.log(ctx);
+
   return (
     <Container style={{ marginTop: "90px" }}>
       <Form onSubmit={loginHander}>

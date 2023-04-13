@@ -8,6 +8,7 @@ function CartItem(props) {
   const quantity = useRef("");
   const ctx = useContext(CartContext);
   const removeItemHandler = (id) => {
+    console.log(id);
     ctx.removeItem(id);
   };
   placeholder = placeholder + props.quantity;

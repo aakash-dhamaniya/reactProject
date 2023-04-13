@@ -7,12 +7,15 @@ import Store from "./pages/Store";
 import Contact from "./pages/Contact";
 import ProductPage from "./components/products/ProductPage";
 import Login from "./pages/Login";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import CartContext from "./store/cart-context";
 import Layout from "./components/layout/Layout";
 function App() {
   const cartCtx = useContext(CartContext);
-  console.log(cartCtx.token);
+  useEffect(() => {
+    cartCtx.showItem();
+    console.log("in app");
+  }, []);
   return (
     // <Routes>
     //   <Route path="/" element={<Layout />}>

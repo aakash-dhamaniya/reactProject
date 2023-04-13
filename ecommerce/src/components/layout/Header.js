@@ -19,7 +19,7 @@ function Header() {
   const numberOfCartItem = cartCtx.items.reduce((curNumber, item) => {
     return curNumber + item.quantity;
   }, 0);
-
+  console.log(cartCtx.items.length);
   return (
     <div>
       <Navbar
