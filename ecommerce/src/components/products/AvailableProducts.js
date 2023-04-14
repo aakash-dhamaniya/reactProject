@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import "./AvailableProducts.css";
+import CartContext from "../../store/cart-context";
 export const productsArr = [
   {
     id: "m1",

@@ -39,18 +39,20 @@ const cartReducer = (state, action) => {
     let amount;
     //for checking existing item
     const exisitingCartItemIndex = state.items.findIndex(
-      (item) => item.id === action.id
+      (item) => item._id === action.id
     );
+    console.log(exisitingCartItemIndex);
     const exisistingItem = state.items[exisitingCartItemIndex];
     amount = exisistingItem.price * exisistingItem.quantity; //it will grape total amount of particular item
     updatedTotalAmount = state.totalAmount - amount;
-    updatedItems = state.items.filter((item) => item.id !== action.id);
+    updatedItems = state.items.filter((item) => item._id !== action.id);
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     };
   }
   if (action.type === "EMPTY") {
+    fetch();
     return { items: [], totalAmount: 0 };
   }
   if (action.type === "CART") {
@@ -93,7 +95,7 @@ const CartProvider = (props) => {
     defaultCartState
   );
   const userIsIsLoggedIn = !!token;
-  const crudcrud = `https://crudcrud.com/api/bdcff6a88d584b5294a75be9630c6143${endPoint}`;
+  const crudcrud = `https://crudcrud.com/api/dfad4ef0b7cf41d3b5fa1d7d4ed7cbf0${endPoint}`;
 
   const addItemToCartHandler = async (item) => {
     const resp = await fetch(crudcrud, {
@@ -106,11 +108,24 @@ const CartProvider = (props) => {
     const data = await resp.json();
     dispachCartAction({ type: "ADD", item: data });
   };
-  const removeItemFormCartHandler = (id) => {
-    console.log("in remove reducer", id);
+  const removeItemFormCartHandler = async (id) => {
+    const res = await fetch(`${crudcrud}/${id}`, {
+      method: "Delete",
+    });
     dispachCartAction({ type: "REM", id });
   };
-  const emptyHandler = () => {
+  const emptyHandler = async () => {
+    const keys = cartState.items.map((id) => {
+      return id._id;
+    });
+
+    keys.forEach(async (element) => {
+      console.log(element);
+      const resp = await fetch(`${crudcrud}/${element}`, {
+        method: "DELETE",
+      });
+    });
+
     dispachCartAction("EMPTY");
   };
   const loginHandler = (token, end) => {
@@ -124,21 +139,24 @@ const CartProvider = (props) => {
     setToken(null);
     localStorage.removeItem("token");
   };
-  async function showItemCrudHandler() {
+  async function showItemCrudHandler(check) {
+    console.log(check, "showItem");
     const res = await fetch(crudcrud, {
       headers: {
         "Content-Type": "application/json",
       },
     });
+
     const data = await res.json();
+    console.log(data);
     data.map((item) => {
       initialCartfromCrud(item);
     });
   }
   function initialCartfromCrud(data) {
+    console.log("initialCart");
     dispachCartAction({ type: "CART", item: data });
   }
-  console.log("in provider", cartState.items);
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
@@ -152,7 +170,6 @@ const CartProvider = (props) => {
     showItem: showItemCrudHandler,
     initialCart: initialCartfromCrud,
   };
-  console.log(cartState.items);
   return (
     <CartContext.Provider value={cartContext}>
       {props.children}

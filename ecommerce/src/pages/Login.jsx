@@ -37,7 +37,6 @@ function Login() {
       const endpoint = `/cart${email.replace(/\.|@/g, "")}`;
       ctx.login(token, endpoint);
       console.log("in login");
-      ctx.showItem();
       history.replace("/store");
     }
 

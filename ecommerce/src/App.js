@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     cartCtx.showItem();
     console.log("in app");
-  }, []);
+  }, [cartCtx.isLoggedIn]);
   return (
     // <Routes>
     //   <Route path="/" element={<Layout />}>
