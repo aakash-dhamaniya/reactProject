@@ -1,7 +1,6 @@
 import React from "react";
 import classes from "./cartItem.module.css";
 function CartItem(props) {
-  console.log(props.item);
   return (
     <li className={classes["cart-item"]}>
       <div>

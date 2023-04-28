@@ -1,8 +1,27 @@
 import React, { useReducer } from "react";
 import MediContext from "./medicine-context";
+//this function will return saved value from local storage
+function getData() {
+  const data = JSON.parse(localStorage.getItem("cart"));
+  getTotalAmount();
+  if (data) {
+    return data;
+  } else return [];
+}
+function getTotalAmount() {
+  const data = JSON.parse(localStorage.getItem("cart"));
+  let totalAmount = 0;
+  if (data) {
+    data.map((item) => {
+      totalAmount = totalAmount + item.price * item.quantity;
+    });
+    console.log("get total amount", totalAmount);
+    return totalAmount;
+  } else return totalAmount;
+}
 const defaultMedState = {
-  items: [],
-  totalAmount: 0,
+  items: getData(),
+  totalAmount: getTotalAmount(),
 };
 const medReducer = (state, action) => {
   //for adding itmes
@@ -10,7 +29,6 @@ const medReducer = (state, action) => {
     const existingMedItemIndex = state.items.findIndex(
       (item) => item.id === action.item.id
     );
-    console.log("exit", existingMedItemIndex);
     const existingMedItem = state.items[existingMedItemIndex];
     let updatedItems;
     if (existingMedItemIndex !== -1) {
@@ -27,7 +45,8 @@ const medReducer = (state, action) => {
       updatedItems = state.items.concat(action.item);
     }
     const updatedAmount =
-      state.totalAmount + action.item.price * action.item.amount;
+      state.totalAmount + action.item.price * action.item.quantity;
+    localStorage.setItem("cart", JSON.stringify(updatedItems));
     return {
       items: updatedItems,
       totalAmount: updatedAmount,
@@ -43,17 +62,18 @@ const medReducer = (state, action) => {
     const updatedTotalAmount = state.totalAmount - existingCartItem.price;
 
     let updatedItems;
-    if (existingCartItem.amount === 1) {
+    if (existingCartItem.quantity === 1) {
       updatedItems = state.items.filter((item) => item.id !== action.id);
     } else {
       const updatedItem = {
         ...existingCartItem,
-        amount: existingCartItem.amount - 1,
+        quantity: existingCartItem.quantity - 1,
       };
 
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
     }
+    localStorage.setItem("cart", JSON.stringify(updatedItems));
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
@@ -61,25 +81,28 @@ const medReducer = (state, action) => {
   }
   return defaultMedState;
 };
-const MediProvider = (porps) => {
+const MediProvider = (props) => {
   const [medState, dispatchMedAction] = useReducer(medReducer, defaultMedState);
   const addItemHandler = (item) => {
-    console.log("add handler", item.quantity);
     dispatchMedAction({ type: "ADD", item: item });
   };
   const removeItemFromCartHandler = (id) => {
     dispatchMedAction({ type: "REM", id: id });
   };
+  const initialCartHandler = () => {};
   const mediContext = {
     items: medState.items,
     totalAmount: medState.totalAmount,
     addItem: addItemHandler,
     removeItem: removeItemFromCartHandler,
+    initialCart: initialCartHandler,
   };
 
+  console.log("in provider", mediContext.totalAmount);
+  // console.log(mediContext.items);
   return (
     <MediContext.Provider value={mediContext}>
-      {porps.children}
+      {props.children}
     </MediContext.Provider>
   );
 };

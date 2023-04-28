@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import ShowMedicine from "./ShowMedicine";
+import "./MedicineForm.css";
 //getting the values of local storage becasue when the component reredner it will overwride with emepty array
 const getDetaFormLs = () => {
   const data = localStorage.getItem("medicine");
@@ -20,6 +21,7 @@ const MedicineForm = () => {
     //preventing dublicates items to push
     let updatedItems;
     let quan = +quantity;
+    let pri = +price;
     const existingMedItemIndex = medicines.findIndex(
       (item) => item.id === medicine
     );
@@ -28,6 +30,7 @@ const MedicineForm = () => {
       const updateitem = {
         ...existingMed,
         quantity: +existingMed.quantity + quan,
+        price: pri,
       };
       updatedItems = [...medicines];
       updatedItems[existingMedItemIndex] = updateitem;

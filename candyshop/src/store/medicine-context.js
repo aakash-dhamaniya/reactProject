@@ -1,8 +1,9 @@
 import React from "react";
 const MediContext = React.createContext({
   items: [],
-  totalAmmount: 0,
+  totalAmount: 0,
   addItem: (item) => {},
   removeItem: (id) => {},
+  initialCart: (item) => {},
 });
 export default MediContext;

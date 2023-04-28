@@ -5,6 +5,7 @@ function MedicineItems(props) {
   const ctx = useContext(MediContext);
   function addItem(quantity) {
     ctx.addItem({
+      id: props.name,
       candyName: props.name,
       description: props.description,
       price: props.price,

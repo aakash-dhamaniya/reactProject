@@ -3,7 +3,7 @@ import MediContext from "../../store/medicine-context";
 import MedicineItems from "./MedicineItems";
 import "./ShowMedicine.css";
 const ShowMedicine = ({ medicines }) => {
-  const mediItems = medicines.map((item) => {
+  const mediItems = medicines.map((item, index) => {
     return (
       <MedicineItems
         key={item.medicine}

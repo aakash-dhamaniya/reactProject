@@ -5,14 +5,16 @@ import CartItem from "./CartItem";
 import MediContext from "../../store/medicine-context";
 function Cart(props) {
   const cartcnt = useContext(MediContext);
-  console.log(cartcnt.items);
+  console.log(cartcnt.totalAmount);
   const totalAmount = `₹${cartcnt.totalAmount.toFixed(2)}`;
   const hasItems = cartcnt.items.length > 0;
 
   const cartItemAddHandler = (item) => {
-    cartcnt.addItem({ ...item, amount: 1 });
+    cartcnt.addItem({ ...item, quantity: 1 });
+    console.log(item.id);
   };
   const cartItemRmoveHandler = (id) => {
+    console.log(id);
     cartcnt.removeItem(id);
   };
   const carItems = (
