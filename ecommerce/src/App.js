@@ -10,12 +10,13 @@ import Login from "./pages/Login";
 import { useContext, useEffect } from "react";
 import CartContext from "./store/cart-context";
 import Layout from "./components/layout/Layout";
+import SignUp from "./pages/SignUp";
 function App() {
   const cartCtx = useContext(CartContext);
-  useEffect(() => {
-    cartCtx.showItem();
-    console.log("in app");
-  }, [cartCtx.isLoggedIn]);
+  // useEffect(() => {
+  //   cartCtx.showItem();
+  //   console.log("in app");
+  // }, [cartCtx.isLoggedIn]);
   return (
     // <Routes>
     //   <Route path="/" element={<Layout />}>
@@ -50,10 +51,13 @@ function App() {
             <Contact />
           </Route>
           <Route path="/login">
-            <Login />
+            {!cartCtx.isLoggedIn ? <Login /> : <Redirect to="store/" />}
           </Route>
           <Route path="/store/:productId">
             <ProductPage />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
           </Route>
         </Switch>
       </Layout>

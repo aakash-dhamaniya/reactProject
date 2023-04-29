@@ -8,8 +8,9 @@ const defaultCartState = {
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
     //for adding items
+    console.log("addAction", action.item._id);
     const exisitingCartItemIndex = state.items.findIndex(
-      (item) => item._id === action.item._id
+      (item) => item.id === action.item.id
     );
     const existingCartItem = state.items[exisitingCartItemIndex];
     let updatedItems;
@@ -52,7 +53,6 @@ const cartReducer = (state, action) => {
     };
   }
   if (action.type === "EMPTY") {
-    fetch();
     return { items: [], totalAmount: 0 };
   }
   if (action.type === "CART") {
@@ -95,18 +95,55 @@ const CartProvider = (props) => {
     defaultCartState
   );
   const userIsIsLoggedIn = !!token;
-  const crudcrud = `https://crudcrud.com/api/dfad4ef0b7cf41d3b5fa1d7d4ed7cbf0${endPoint}`;
+  const crudcrud = `https://crudcrud.com/api/9239aba3606842b8befaa0194fb29461${endPoint}`;
 
   const addItemToCartHandler = async (item) => {
     const resp = await fetch(crudcrud, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(item),
     });
     const data = await resp.json();
-    dispachCartAction({ type: "ADD", item: data });
+    const exisistingIndex = data.findIndex((id) => id.id === item.id);
+    const exisistingItem = data[exisistingIndex];
+    console.log("existingData", exisistingItem);
+    console.log("checking data", data);
+    if (exisistingItem) {
+      const api = crudcrud + "/" + exisistingItem._id;
+      const id = exisistingItem._id;
+      console.log(id);
+      console.log("in if", api);
+      const updatedValue = {
+        id: item.id,
+        imageUrl: item.imageUrl,
+        quantity: +exisistingItem.quantity + +item.quantity,
+        price: item.price,
+        title: item.title,
+      };
+      console.log(updatedValue);
+      const res = await fetch(
+        `https://crudcrud.com/api/9239aba3606842b8befaa0194fb29461/cartaakashkumar1332gmailcom/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedValue),
+        }
+      );
+    } else {
+      console.log("in else");
+      const resp = await fetch(crudcrud, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      const data = await resp.json();
+      dispachCartAction({ type: "ADD", item: data });
+    }
   };
   const removeItemFormCartHandler = async (id) => {
     const res = await fetch(`${crudcrud}/${id}`, {
@@ -118,7 +155,8 @@ const CartProvider = (props) => {
     const keys = cartState.items.map((id) => {
       return id._id;
     });
-
+    console.log("emptyHandler");
+    console.log("in if");
     keys.forEach(async (element) => {
       console.log(element);
       const resp = await fetch(`${crudcrud}/${element}`, {
@@ -136,8 +174,10 @@ const CartProvider = (props) => {
     localStorage.setItem("endpoint", end);
   };
   const logoutHandler = () => {
-    setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("endpoint");
+    setToken(null);
+    clearCartHandler();
   };
   async function showItemCrudHandler(check) {
     console.log(check, "showItem");
@@ -157,6 +197,9 @@ const CartProvider = (props) => {
     console.log("initialCart");
     dispachCartAction({ type: "CART", item: data });
   }
+  function clearCartHandler() {
+    dispachCartAction("EMPTY");
+  }
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
@@ -169,7 +212,9 @@ const CartProvider = (props) => {
     logout: logoutHandler,
     showItem: showItemCrudHandler,
     initialCart: initialCartfromCrud,
+    clearCart: clearCartHandler,
   };
+  console.log(cartContext.items);
   return (
     <CartContext.Provider value={cartContext}>
       {props.children}
