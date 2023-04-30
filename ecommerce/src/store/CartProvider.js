@@ -8,7 +8,7 @@ const defaultCartState = {
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
     //for adding items
-    console.log("addAction", action.item._id);
+    console.log("addAction", action.item.price);
     const exisitingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.item.id
     );
@@ -17,17 +17,16 @@ const cartReducer = (state, action) => {
     if (existingCartItem) {
       const updateItem = {
         ...existingCartItem,
-        quantity: existingCartItem.quantity + action.item.quantity,
+        quantity: action.item.quantity,
       };
       updatedItems = [...state.items];
       updatedItems[exisitingCartItemIndex] = updateItem;
     } else {
       //adding new item for the first time
-      // updatedItems = { ...state.items };
+      updatedItems = { ...state.items };
       updatedItems = state.items.concat(action.item);
     }
-    const updatedAmount =
-      state.totalAmount + action.item.price * action.item.quantity;
+    const updatedAmount = action.item.price * action.item.quantity;
     return {
       items: updatedItems,
       totalAmount: updatedAmount,
@@ -95,9 +94,10 @@ const CartProvider = (props) => {
     defaultCartState
   );
   const userIsIsLoggedIn = !!token;
-  const crudcrud = `https://crudcrud.com/api/9239aba3606842b8befaa0194fb29461${endPoint}`;
+  const crudcrud = `https://crudcrud.com/api/04d4695f711a4060958dc6f4f1c87278${endPoint}`;
 
   const addItemToCartHandler = async (item) => {
+    console.log("in addITemToCartHanlder");
     const resp = await fetch(crudcrud, {
       method: "GET",
       headers: {
@@ -107,8 +107,8 @@ const CartProvider = (props) => {
     const data = await resp.json();
     const exisistingIndex = data.findIndex((id) => id.id === item.id);
     const exisistingItem = data[exisistingIndex];
-    console.log("existingData", exisistingItem);
-    console.log("checking data", data);
+    // console.log("existingData", exisistingItem);
+    // console.log("checking data", data);
     if (exisistingItem) {
       const api = crudcrud + "/" + exisistingItem._id;
       const id = exisistingItem._id;
@@ -122,16 +122,17 @@ const CartProvider = (props) => {
         title: item.title,
       };
       console.log(updatedValue);
-      const res = await fetch(
-        `https://crudcrud.com/api/9239aba3606842b8befaa0194fb29461/cartaakashkumar1332gmailcom/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedValue),
-        }
-      );
+      const res = await fetch(api, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedValue),
+      });
+      console.log("in checking ", res);
+      if (res.ok) {
+        dispachCartAction({ type: "ADD", item: updatedValue });
+      }
     } else {
       console.log("in else");
       const resp = await fetch(crudcrud, {
