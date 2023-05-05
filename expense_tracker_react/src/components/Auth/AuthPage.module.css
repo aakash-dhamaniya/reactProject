@@ -7,7 +7,9 @@
 
   height: 100vh;
 }
-
+.signup button:hover {
+  cursor: pointer;
+}
 .form {
   align-items: center;
 
