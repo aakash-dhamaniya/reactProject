@@ -1,0 +1,20 @@
+.profile {
+  text-align: center;
+}
+.heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+}
+.profileContainer {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.profileInfo {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}

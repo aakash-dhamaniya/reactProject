@@ -1,0 +1,18 @@
+.header {
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.profileClickContainer {
+  border-radius: 20px;
+  background-color: rgb(232, 190, 172);
+  display: flex;
+  padding: 0.4rem;
+  height: 20px;
+  align-items: center;
+}
+.link {
+  color: blue;
+}
