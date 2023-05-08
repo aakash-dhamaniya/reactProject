@@ -1,11 +1,32 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Classes from "./Profile.module.css";
 import { AiFillGithub } from "react-icons/ai";
 import { AiOutlineGlobal } from "react-icons/ai";
 function Profile() {
   const nameRef = useRef();
   const profileRef = useRef();
-
+  useEffect(() => {
+    getProfileData();
+  }, [nameRef, profileRef]);
+  // this function will fetch userData and pre field data to the input fields
+  async function getProfileData() {
+    const res = await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCvG0gmGxlJl_RipQ1qG7lAgzkXH_rLC-0",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idToken: localStorage.getItem("token"),
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data.users[0]);
+    nameRef.current.value = data.users[0].displayName;
+    profileRef.current.value = data.users[0].photoUrl;
+  }
   async function onUpdate() {
     const name = nameRef.current.value;
     const profile = profileRef.current.value;
@@ -20,7 +41,7 @@ function Profile() {
           },
           body: JSON.stringify({
             idToken: token,
-            displayName: profile,
+            displayName: name,
             photoUrl: profile,
             returnSecureToken: true,
           }),
