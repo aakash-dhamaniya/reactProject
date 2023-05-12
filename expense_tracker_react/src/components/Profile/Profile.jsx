@@ -1,18 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Classes from "./Profile.module.css";
 import { AiFillGithub } from "react-icons/ai";
 import { AiOutlineGlobal } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 function Profile() {
-  const nameRef = useRef("");
-  const profileRef = useRef("");
+  const nameRef = useRef();
+  const profileRef = useRef();
   const verifyEmail = useRef();
   const [isVerified, setIsVerified] = useState(false);
-  useEffect(() => {
-    console.log("hello");
-    getProfileData();
-  }, [nameRef, profileRef]);
+  const navigation = useNavigate();
   // this function will fetch userData and pre field data to the input fields
-  async function getProfileData() {
+  const getProfileData = useCallback(async () => {
     const res = await fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCvG0gmGxlJl_RipQ1qG7lAgzkXH_rLC-0",
       {
@@ -31,7 +29,12 @@ function Profile() {
     nameRef.current.value = data.users[0].displayName;
     profileRef.current.value = data.users[0].photoUrl;
     verifyEmail.current.value = data.users[0].email;
-  }
+  }, []);
+  useEffect(() => {
+    console.log("hello");
+    getProfileData();
+  }, [getProfileData]);
+
   //this function  will update user data
   async function onUpdate() {
     const name = nameRef.current.value;
@@ -72,12 +75,18 @@ function Profile() {
     const data = await res.json();
     console.log(data);
   }
+  //for cancel the updating
+  function cancelHandler() {
+    navigation("/home");
+  }
   return (
     <div className={Classes.profile}>
       <div className={Classes.heading}>
         <h1>Contact Details</h1>
         <div>
-          <button className={Classes.cancelButton}>Cancel</button>
+          <button onClick={cancelHandler} className={Classes.cancelButton}>
+            Cancel
+          </button>
         </div>
       </div>
       {!isVerified && (

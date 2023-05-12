@@ -12,8 +12,10 @@ const AuthPage = () => {
   async function saveToken(data) {
     const resp = await data.json();
     const token = resp.idToken;
+    const localId = resp.localId;
     localStorage.setItem("token", token);
-    navigate("/");
+    localStorage.setItem("localId", localId);
+    navigate("/home");
   }
   async function submitForm(e) {
     e.preventDefault();
