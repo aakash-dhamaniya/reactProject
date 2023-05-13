@@ -85,6 +85,19 @@ const AuthPage = () => {
               {isSignupScreen ? "Sign Up" : "Login"}
             </button>
           </div>
+          {!isSignupScreen && (
+            <div className="">
+              <label
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate("/forgot");
+                }}
+                className=""
+              >
+                Forget Password?
+              </label>
+            </div>
+          )}
         </div>
       </form>
 
