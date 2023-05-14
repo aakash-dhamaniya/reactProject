@@ -1,0 +1,11 @@
+.AddForm {
+  margin: 10px;
+}
+.form {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+.form label {
+  margin-right: 10px;
+}
