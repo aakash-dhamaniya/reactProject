@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Classes from "./Home.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthPage from "../Auth/AuthPage";
 import AddExpense from "./AddExpense";
+import axios from "axios";
+import ShowForm from "./ShowForm";
 function Home() {
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
-  function logoutHandler() {
-    localStorage.clear();
-    navigate("/");
+  async function allData() {
+    const email = localStorage.getItem("email").replace(/[@.]/g, "");
+    const url = `https://expense-tracker-69a2b-default-rtdb.asia-southeast1.firebasedatabase.app/${email}/expenses.json`;
+    const resp = await axios(url);
+    const data = resp.data;
+
+    const formData = [];
+
+    for (let item in data) {
+      formData.push({
+        expenseTitle: data[item].data.expenseTitle,
+        expensePrice: data[item].data.expensePrice,
+        expenseCategory: data[item].data.expenseCategory,
+      });
+
+      setData(formData);
+    }
   }
+  function showDataHandler(data) {
+    setData(data);
+  }
+  function logoutHandler() {
+    navigate("/");
+    localStorage.clear();
+  }
+  useEffect(() => {
+    allData();
+    console.log("hello");
+  }, []);
+
   return (
     <>
       {" "}
@@ -22,7 +50,8 @@ function Home() {
           </NavLink>
         </div>
       </div>
-      <AddExpense />
+      <AddExpense onshowData={showDataHandler} />
+      <ShowForm showData={data} />
     </>
   );
 }

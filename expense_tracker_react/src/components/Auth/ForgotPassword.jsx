@@ -18,7 +18,7 @@ function ForgotPassword() {
         },
       }
     );
-    const data = await res.json();
+
     if (res.ok) {
       alert("check your mail box");
       navigate("/");

@@ -1,0 +1,26 @@
+.ShowForm {
+  margin: top 30px;
+}
+.ShowFormContainer {
+  margin-top: 10px;
+  display: flex;
+  gap: 30px;
+  justify-content: space-around;
+}
+.table {
+  width: 100%;
+  position: relative;
+  margin: 10px auto;
+  margin-top: 5rem;
+  height: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+.table thead tr {
+  border: 1px solid black;
+}
+.table tr {
+  font-size: x-large;
+}
+.trData {
+}
