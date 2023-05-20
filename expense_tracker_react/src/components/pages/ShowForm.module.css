@@ -8,6 +8,7 @@
   justify-content: space-around;
 }
 .table {
+  background-color: rgb(208, 245, 190);
   width: 100%;
   position: relative;
   margin: 10px auto;

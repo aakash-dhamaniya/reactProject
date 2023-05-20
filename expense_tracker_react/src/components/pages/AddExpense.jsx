@@ -18,12 +18,14 @@ function AddExpense(props) {
       },
     });
     if (resp.status === 200) {
+      console.log("200");
       const resp = await axios(url);
       console.log(resp.data);
       const formData = [];
       const data = resp.data;
       for (let item in data) {
         formData.push({
+          expenseId: item,
           expenseTitle: data[item].data.expenseTitle,
           expensePrice: data[item].data.expensePrice,
           expenseCategory: data[item].data.expenseCategory,

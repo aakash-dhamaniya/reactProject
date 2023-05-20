@@ -12,16 +12,16 @@ function Home() {
     const url = `https://expense-tracker-69a2b-default-rtdb.asia-southeast1.firebasedatabase.app/${email}/expenses.json`;
     const resp = await axios(url);
     const data = resp.data;
-
     const formData = [];
 
     for (let item in data) {
       formData.push({
+        expenseId: item,
         expenseTitle: data[item].data.expenseTitle,
         expensePrice: data[item].data.expensePrice,
         expenseCategory: data[item].data.expenseCategory,
       });
-
+      // console.log(formData);
       setData(formData);
     }
   }
@@ -51,7 +51,7 @@ function Home() {
         </div>
       </div>
       <AddExpense onshowData={showDataHandler} />
-      <ShowForm showData={data} />
+      <ShowForm onshowData={showDataHandler} showData={data} />
     </>
   );
 }
