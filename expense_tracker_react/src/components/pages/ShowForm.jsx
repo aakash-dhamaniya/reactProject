@@ -1,37 +1,55 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./ShowForm.module.css";
 import axios from "axios";
 import EditExpense from "./EditExpense";
+import { useDispatch, useSelector } from "react-redux";
+import { expensesActions } from "../../store/expense";
 function ShowForm(props) {
+  const dispatch = useDispatch();
+  const allItems = useSelector((state) => state.expenses.items);
   const [edit, setEdit] = useState(false);
   const [editData, setEditData] = useState("");
-  const { showData } = props;
-  console.log(showData);
   const url =
     "https://expense-tracker-69a2b-default-rtdb.asia-southeast1.firebasedatabase.app";
   const email = localStorage.getItem("email").replace(/[@.]/g, "");
+  //for showing data on screen
+  const getData = async () => {
+    const res = await axios.get(`${url}/${email}/expenses.json`);
+    // console.log("in getData", res.data);
+    const keys = Object.keys(res.data);
+    const expenses = keys.map((key) => {
+      return {
+        id: key,
+        expenseTitle: res.data[key].expenseTitle,
+        expensePrice: res.data[key].expensePrice,
+        expenseCategory: res.data[key].expenseCategory,
+      };
+    });
+    // console.log("in showForm", expenses);
+    const prices = expenses.map((item) => item.expensePrice);
+    const initialTotal = prices.reduce((pre, cur) => {
+      return +pre + +cur;
+    }, 0);
+    dispatch(expensesActions.initialExpenses(expenses));
+    dispatch(expensesActions.updateTotal(initialTotal));
+  };
+  useEffect(() => {
+    console.log("run hua ");
+
+    getData();
+  }, []);
   // for deleting item from expense
   async function deleteHandler(id) {
+    console.log("id", id);
     const resp = await axios.delete(`${url}/${email}/expenses/${id}.json`);
 
     if (resp.status === 200) {
-      const resp = await axios(`${url}/${email}/expenses.json`);
-      const respData = [];
-      const data = resp.data;
-      for (let item in data) {
-        respData.push({
-          expenseId: item,
-          expenseTitle: data[item].data.expenseTitle,
-          expensePrice: data[item].data.expensePrice,
-          expenseCategory: data[item].data.expenseCategory,
-        });
-      }
-      props.onshowData(respData);
+      dispatch(expensesActions.removeExpense(id));
     }
   }
   //for edit expense
   async function editHandler(et, id, ca, pr) {
-    // const resp = await axios.put(`${url}/${email}/expenses/${id}.json`);
+    console.log(id);
     const data = { id: id, expenseTitle: et, category: ca, price: pr };
     setEditData(data);
     setEdit(true);
@@ -41,21 +59,16 @@ function ShowForm(props) {
   function cancel() {
     setEdit(false);
   }
-  const data = showData.map((item) => {
+  const data = allItems.map((item) => {
     return (
-      <tr key={item.expenseId} className={classes.trData}>
+      <tr key={item.id} className={classes.trData}>
         <td>{item.expenseTitle}</td>
         <td>{item.expenseCategory}</td>
         <td>{item.expensePrice}</td>
         <td>
           <button
             onClick={() => {
-              deleteHandler(
-                item.expenseId,
-                item.expenseTitle,
-                item.expenseCategory,
-                item.expensePrice
-              );
+              deleteHandler(item.id);
             }}
           >
             Delete
@@ -67,7 +80,7 @@ function ShowForm(props) {
               onClick={() => {
                 editHandler(
                   item.expenseTitle,
-                  item.expenseId,
+                  item.id,
                   item.expenseCategory,
                   item.expensePrice
                 );

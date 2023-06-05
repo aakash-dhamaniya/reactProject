@@ -1,14 +1,17 @@
 import React, { useRef, useState } from "react";
 import classes from "./AuthPage.module.css";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authentication";
 const AuthPage = () => {
+  const dispatch = useDispatch();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const [isSignupScreen, setIsSignupScreen] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  //this function will save data to local storage and to reduxStorage
   async function saveToken(data) {
     const resp = await data.json();
     const token = resp.idToken;
@@ -17,6 +20,13 @@ const AuthPage = () => {
     localStorage.setItem("token", token);
     localStorage.setItem("localId", localId);
     localStorage.setItem("email", email);
+    dispatch(
+      authActions.updateAuth({
+        token: token,
+        email: email,
+        localId: localId,
+      })
+    );
     navigate("/home");
   }
   async function submitForm(e) {

@@ -1,38 +1,36 @@
 import React, { useRef } from "react";
 import classes from "./editExpense.module.css";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { expensesActions } from "../../store/expense";
 function EditExpense(props) {
-  const titleRef = useRef("hello");
+  const dispatch = useDispatch();
+  console.log(props.editData);
+  const titleRef = useRef();
   const categoryRef = useRef();
   const priceRef = useRef();
   const url =
     "https://expense-tracker-69a2b-default-rtdb.asia-southeast1.firebasedatabase.app";
   const email = localStorage.getItem("email").replace(/[@.]/g, "");
+
   async function editHandler(e) {
     e.preventDefault();
+    const data = {
+      expenseTitle: titleRef.current.value,
+      expenseCategory: categoryRef.current.value,
+      expensePrice: priceRef.current.value,
+    };
     const resp = await axios.put(
       `${url}/${email}/expenses/${props.editData.id}.json`,
-      {
-        data: {
-          expenseTitle: titleRef.current.value,
-          expenseCategory: categoryRef.current.value,
-          expensePrice: priceRef.current.value,
-        },
-      }
+      data
     );
     if (resp.status === 200) {
-      const resp = await axios(`${url}/${email}/expenses.json`);
-      const respData = [];
-      const data = resp.data;
-      for (let item in data) {
-        respData.push({
-          expenseId: item,
-          expenseTitle: data[item].data.expenseTitle,
-          expensePrice: data[item].data.expensePrice,
-          expenseCategory: data[item].data.expenseCategory,
-        });
-      }
-      props.onshowData(respData);
+      dispatch(
+        expensesActions.editExpense({
+          id: props.editData.id,
+          item: data,
+        })
+      );
       props.cancel();
     }
   }

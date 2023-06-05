@@ -1,42 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Classes from "./Home.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import AddExpense from "./AddExpense";
-import axios from "axios";
 import ShowForm from "./ShowForm";
+import { useSelector } from "react-redux";
 function Home() {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
-  async function allData() {
-    const email = localStorage.getItem("email").replace(/[@.]/g, "");
-    const url = `https://expense-tracker-69a2b-default-rtdb.asia-southeast1.firebasedatabase.app/${email}/expenses.json`;
-    const resp = await axios(url);
-    const data = resp.data;
-    const formData = [];
-
-    for (let item in data) {
-      formData.push({
-        expenseId: item,
-        expenseTitle: data[item].data.expenseTitle,
-        expensePrice: data[item].data.expensePrice,
-        expenseCategory: data[item].data.expenseCategory,
-      });
-      // console.log(formData);
-      setData(formData);
-    }
-  }
-  function showDataHandler(data) {
-    setData(data);
-  }
+  const totalAmount = useSelector((state) => state.expenses.totalAmount);
   function logoutHandler() {
     navigate("/");
     localStorage.clear();
   }
-  useEffect(() => {
-    allData();
-    console.log("hello");
-  }, []);
-
+  console.log(totalAmount);
   return (
     <>
       {" "}
@@ -50,8 +25,9 @@ function Home() {
           </NavLink>
         </div>
       </div>
-      <AddExpense onshowData={showDataHandler} />
-      <ShowForm onshowData={showDataHandler} showData={data} />
+      <AddExpense />
+      {totalAmount > 10000 && <button>Active premium</button>}
+      <ShowForm />
     </>
   );
 }
