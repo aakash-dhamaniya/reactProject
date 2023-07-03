@@ -53,16 +53,25 @@ const mailSlice = createSlice({
       state.userinbox = true;
       state.compose = false;
       state.sentmail = false;
+      // localStorage.setItem("inbox", true);
+      // localStorage.setItem("sentInbox", false);
+      // localStorage.setItem("compose", false);
     },
     usersentState(state) {
       state.userinbox = false;
       state.compose = false;
       state.sentmail = true;
+      // localStorage.setItem("inbox", false);
+      // localStorage.setItem("sentInbox", true);
+      // localStorage.setItem("compose", false);
     },
     usercomposeState(state) {
       state.userinbox = false;
       state.compose = true;
       state.sentmail = false;
+      // localStorage.setItem("inbox", false);
+      // localStorage.setItem("sentInbox", false);
+      // localStorage.setItem("compose", true);
     },
   },
   extraReducers: {

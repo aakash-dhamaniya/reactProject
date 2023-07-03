@@ -18,6 +18,10 @@ export default function Compose() {
   function jd() {
     console.log(mesRef.current.value);
   }
+  const config = {
+    placeholder: "Enter Email",
+    buttons: ["bold", "italic", "underline", "link", "unlink", "source"],
+  };
   const emailSubmitHandler = async () => {
     const senderEmail = email;
     const subject = subRef.current.value;
@@ -84,7 +88,12 @@ export default function Compose() {
               <Form.Control ref={subRef} aria-label="to" />
             </InputGroup>
             <div>
-              <JoditEditor onChange={jd} tabIndex={1} ref={mesRef} />
+              <JoditEditor
+                config={config}
+                onChange={jd}
+                tabIndex={1}
+                ref={mesRef}
+              />
             </div>
             <div className="py-2 ">
               <Button onClick={emailSubmitHandler}>

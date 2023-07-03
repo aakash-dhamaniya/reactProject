@@ -12,7 +12,7 @@ import User from "./pages/User";
 
 function App() {
   const mail = useSelector((state) => state.authentication.email);
-  console.log(mail);
+  // console.log(mail);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInbox());

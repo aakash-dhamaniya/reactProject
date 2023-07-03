@@ -1,10 +1,10 @@
-import React from "react";
-import Compose from "../components/Compose";
+import React, { useRef } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 export default function Home() {
-  return (
-    <div>
-      welcome to your mail box
-      <Compose />
-    </div>
-  );
+  const editRef = useRef("");
+  function check() {
+    console.log(editRef.current);
+  }
+  return <div>welcome to your mail box</div>;
 }
