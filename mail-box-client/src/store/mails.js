@@ -48,7 +48,7 @@ const mailSlice = createSlice({
     mailSent(state, action) {
       state.sent.push(action.payload);
     },
-    initializeMails(state, action) {},
+
     userinboxState(state) {
       state.userinbox = true;
       state.compose = false;
@@ -94,6 +94,7 @@ const mailSlice = createSlice({
           message: data[item].message,
           to: data[item].to,
           subject: data[item].subject,
+          time: data[item].time,
         });
       }
 
@@ -122,6 +123,8 @@ const mailSlice = createSlice({
           message: data[item].message,
           senderEmail: data[item].senderEmail,
           subject: data[item].subject,
+          read: data[item].read,
+          time: data[item].time,
         });
       }
       // const transformedData = Object.values(action.payload).map((item) => {

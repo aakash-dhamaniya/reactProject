@@ -9,7 +9,9 @@
   height: 92.1vh;
 }
 .sButton {
+  margin: auto;
   padding: 1rem;
   width: 100%;
   margin-bottom: 1rem;
+  font-size: 90%;
 }

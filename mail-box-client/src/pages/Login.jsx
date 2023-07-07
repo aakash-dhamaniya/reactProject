@@ -26,6 +26,7 @@ export default function Login() {
       returnSecureToken: true,
     };
     try {
+      toast.success("login successfully");
       const response = await axios.post(authSignIn, user);
 
       dispatch(

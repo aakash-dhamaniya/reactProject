@@ -12,6 +12,7 @@ function UserSentBox() {
         to={item.to}
         subject={item.subject}
         message={item.message}
+        time={item.time}
       />
     );
   });

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { authAction } from "../store/auth";
 export default function Header() {
   const auth = useSelector((state) => state.authentication.token);
+  const email = useSelector((state) => state.authentication.email);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // console.log("in header", auth);
@@ -39,7 +40,12 @@ export default function Header() {
               Log In
             </NavLink>
           )}
-          {auth && <CgProfile className="text-light" />}
+          <div className="d-flex align-items-center justify-content-between  ">
+            {auth && <CgProfile className="text-light" />}
+            {auth && (
+              <div style={{ color: "white", margin: "0.3rem" }}>{email}</div>
+            )}
+          </div>
         </Nav>
         {auth && <Button onClick={logoutHandler}>Logout</Button>}
       </Container>
