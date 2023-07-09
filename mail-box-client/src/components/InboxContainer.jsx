@@ -1,17 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { baseAddress } from "../utils/autKey/api";
 import { useDispatch, useSelector } from "react-redux";
 import HTMLReactParser from "html-react-parser";
 import axios from "axios";
-import { getInbox } from "../store/mails";
+import { getInbox, mailsAction } from "../store/mails";
 function InboxContainer(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let email = useSelector((state) => state.authentication.email);
+  const mails = useSelector((state) => state.mails.inbox);
   email = email.replace(/[@.]/g, "");
   console.log("from inbox conatiner", email);
+  // useEffect(() => {
+  //   const timer = setInterval(dispatch(getInbox()), 20000);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // });
+  useEffect(() => {
+    console.log(mails.length);
+    const fetchMails = async () => {
+      try {
+        const response = await axios.get(
+          `${baseAddress}/mailsData/${email}/emails.json`
+        );
+        const objectLength = Object.keys(response.data).length;
+        console.log(objectLength);
+        if (mails.length === objectLength) {
+          console.log("return hua");
+          return;
+        }
+        if (response.data) {
+          dispatch(mailsAction.setRealTimeData(response.data));
+        }
+      } catch (error) {
+        console.error("Error fetching mails:", error);
+      } finally {
+        // After fetching mails, initiate the next long-polling request
+        //to enable this uncomment this fetchmails()
+        // fetchMails();
+      }
+    };
+
+    fetchMails();
+  }, []);
   const mailOpenHandler = async () => {
     if (!props.read) {
       try {

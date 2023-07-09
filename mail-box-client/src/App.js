@@ -12,6 +12,7 @@ import User from "./pages/User";
 import SingleEmailView from "./pages/SingleEmailView";
 import SingleSentBox from "./pages/SingleSentBox";
 import Check from "./components/check";
+import { ToastContainer } from "react-bootstrap";
 function App() {
   const mail = useSelector((state) => state.authentication.email);
   // console.log(mail);
