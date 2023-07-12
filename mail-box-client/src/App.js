@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Header from "./layout/Header";
 import Signup from "./pages/Signup";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Forget from "./pages/Forget";
 import { useEffect } from "react";
@@ -11,8 +10,10 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import User from "./pages/User";
 import SingleEmailView from "./pages/SingleEmailView";
 import SingleSentBox from "./pages/SingleSentBox";
-import Check from "./components/check";
 import { ToastContainer } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./utils/privateRoute/PrivateRoute";
+import Preventgoback from "./utils/privateRoute/Preventgoback";
 function App() {
   const mail = useSelector((state) => state.authentication.email);
   // console.log(mail);
@@ -27,15 +28,50 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <ToastContainer />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <User />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Preventgoback>
+              <Signup />
+            </Preventgoback>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Preventgoback>
+              <Login />
+            </Preventgoback>
+          }
+        />
+
         <Route path="/forget" element={<Forget />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/inbox/:mailId" element={<SingleEmailView />} />
-        <Route path="/sentbox/:sentId" element={<SingleSentBox />} />
-        <Route path="/check" element={<Check />} />
+        <Route
+          path="/inbox/:mailId"
+          element={
+            <PrivateRoute>
+              <SingleEmailView />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/sentbox/:sentId"
+          element={
+            <PrivateRoute>
+              <SingleSentBox />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

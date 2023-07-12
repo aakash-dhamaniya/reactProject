@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { authSignIn } from "../utils/autKey/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,6 @@ export default function Login() {
       returnSecureToken: true,
     };
     try {
-      toast.success("login successfully");
       const response = await axios.post(authSignIn, user);
 
       dispatch(
@@ -36,6 +35,7 @@ export default function Login() {
         })
       );
       dispatch(authAction.loader());
+      toast.success("login successfully");
       navigate("/user");
       console.log(response);
     } catch (error) {
@@ -47,7 +47,6 @@ export default function Login() {
   };
   return (
     <>
-      <ToastContainer />
       <Card className=" p-2 mx-auto text-center col-md-6 col-lg-4 mt-5">
         <Card.Header>{"Sign In"}</Card.Header>
         <Card.Body>
@@ -99,6 +98,7 @@ export default function Login() {
             <Link to={"/SignUp"}>SignUp</Link>
           </span>
         </p>
+        <Link to={"/forget"}>Forget Password?</Link>
       </Card>
     </>
   );

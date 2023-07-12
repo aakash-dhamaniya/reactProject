@@ -113,7 +113,10 @@ const mailSlice = createSlice({
           time: data[item].time,
         });
       }
-
+      //sorting emails according to time
+      transformedData.sort((a, b) => {
+        return new Date(b.time) - new Date(a.time);
+      });
       state.sent = transformedData;
     },
     [getSentMail.rejected]: (state) => {
@@ -143,6 +146,10 @@ const mailSlice = createSlice({
           time: data[item].time,
         });
       }
+      //sorting emails according to time
+      transformedData.sort((a, b) => {
+        return new Date(b.time) - new Date(a.time);
+      });
       // const transformedData = Object.values(action.payload).map((item) => {
       //   return {
       //     message: item.message,
