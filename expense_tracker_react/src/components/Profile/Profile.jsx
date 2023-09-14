@@ -24,14 +24,13 @@ function Profile() {
       }
     );
     const data = await res.json();
-    console.log(data.users[0].emailVerified);
+    console.log(data);
     setIsVerified(data.users[0].emailVerified);
     nameRef.current.value = data.users[0].displayName;
     profileRef.current.value = data.users[0].photoUrl;
     verifyEmail.current.value = data.users[0].email;
   }, []);
   useEffect(() => {
-    console.log("hello");
     getProfileData();
   }, [getProfileData]);
 

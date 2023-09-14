@@ -6,7 +6,6 @@ import Profile from "./components/Profile/Profile";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 const App = () => {
-  // const auth = localStorage.getItem("token");
   return (
     <BrowserRouter>
       <Routes>

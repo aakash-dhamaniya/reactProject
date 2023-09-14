@@ -8,6 +8,7 @@ const authSlice = createSlice({
   },
   reducers: {
     updateAuth(state, action) {
+      console.log("state", state.token);
       state = action.payload;
     },
   },

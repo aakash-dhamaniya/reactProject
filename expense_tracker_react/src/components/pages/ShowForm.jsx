@@ -7,6 +7,7 @@ import { expensesActions } from "../../store/expense";
 function ShowForm(props) {
   const dispatch = useDispatch();
   const allItems = useSelector((state) => state.expenses.items);
+  const isEmailChange = useSelector((state) => state.authentication.email);
   const [edit, setEdit] = useState(false);
   const [editData, setEditData] = useState("");
   const url =
@@ -34,10 +35,8 @@ function ShowForm(props) {
     dispatch(expensesActions.updateTotal(initialTotal));
   };
   useEffect(() => {
-    console.log("run hua ");
-
     getData();
-  }, []);
+  }, [isEmailChange]);
   // for deleting item from expense
   async function deleteHandler(id) {
     console.log("id", id);
