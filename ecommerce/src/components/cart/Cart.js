@@ -9,8 +9,8 @@ function Cart() {
   console.log(ctx.items);
   const producst = ctx.items.map((item) => (
     <CartItem
-      key={item._id}
-      id={item._id}
+      key={item.id}
+      id={item.id}
       title={item.title}
       price={item.price}
       image={item.imageUrl}

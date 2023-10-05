@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import "./AvailableProducts.css";
-import CartContext from "../../store/cart-context";
 export const productsArr = [
   {
     id: "m1",
@@ -31,10 +30,9 @@ export const productsArr = [
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
   },
 ];
-function AvailableProducts(props) {
+function AvailableProducts() {
   const producst = productsArr.map((item) => (
     <ProductItem
-      getData={props.getData}
       key={item.id}
       id={item.id}
       title={item.title}

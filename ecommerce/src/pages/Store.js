@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AvailableProducts from "../components/products/AvailableProducts";
-const Store = (props) => {
+const Store = () => {
   return <AvailableProducts />;
 };
 

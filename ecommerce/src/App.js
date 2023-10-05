@@ -7,16 +7,52 @@ import Store from "./pages/Store";
 import Contact from "./pages/Contact";
 import ProductPage from "./components/products/ProductPage";
 import Login from "./pages/Login";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import CartContext from "./store/cart-context";
 import Layout from "./components/layout/Layout";
 import SignUp from "./pages/SignUp";
+import { baseAddress } from "./utils/api";
+
 function App() {
   const cartCtx = useContext(CartContext);
-  // useEffect(() => {
-  //   cartCtx.showItem();
-  //   console.log("in app");
-  // }, [cartCtx.isLoggedIn]);
+  const [isFirstLoad, setIsFirstLoad] = useState(false);
+  //fetching all data from backend
+  useEffect(() => {
+    console.log("get data");
+    getCartItems();
+  }, [cartCtx.isLoggedIn]);
+
+  //for adding data
+  useEffect(() => {
+    if (!isFirstLoad) {
+      setIsFirstLoad(true);
+      return;
+    }
+    addItem();
+  }, [cartCtx.items]);
+  async function addItem() {
+    const data = cartCtx.items;
+    const res = await fetch(
+      `${baseAddress}/${localStorage.getItem("endpoint")}.json`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+  }
+  async function getCartItems() {
+    const res = await fetch(
+      `${baseAddress}/${localStorage.getItem("endpoint")}.json`
+    );
+    const data = await res.json();
+    console.log(data);
+    if (res.ok) {
+      if (data) cartCtx.getCartData(data);
+    }
+  }
   return (
     // <Routes>
     //   <Route path="/" element={<Layout />}>

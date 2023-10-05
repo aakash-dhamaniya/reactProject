@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import CartContext from "../store/cart-context";
 import { useHistory } from "react-router-dom";
-
+import { key } from "../utils/api";
 function Login() {
   const ctx = useContext(CartContext);
   const history = useHistory();
   const emailRef = useRef("");
   const passRef = useRef("");
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`;
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
   useEffect(() => {
     ctx.clearCart();
   }, [ctx.items]);
@@ -37,7 +37,7 @@ function Login() {
       // });
       const email = data.email;
       const token = data.idToken;
-      const endpoint = `/cart${email.replace(/\.|@/g, "")}`;
+      const endpoint = `${email.replace(/\.|@/g, "")}`;
       ctx.login(token, endpoint);
       console.log("in login");
       history.replace("/store");

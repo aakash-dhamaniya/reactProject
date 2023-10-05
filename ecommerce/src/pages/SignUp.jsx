@@ -2,6 +2,7 @@ import React, { useContext, useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import CartContext from "../store/cart-context";
 import { useHistory } from "react-router-dom";
+import { key } from "../utils/api";
 export default function SignUp() {
   const history = useHistory();
   const ctx = useContext(CartContext);
@@ -12,7 +13,7 @@ export default function SignUp() {
     const email = emailRef.current.value;
     const password = passRef.current.value;
     const res = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3SdlMOJM2gwGLZ_QIpH2ktOnRQdjKPUY`,
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`,
       {
         method: "POST",
         body: JSON.stringify({
